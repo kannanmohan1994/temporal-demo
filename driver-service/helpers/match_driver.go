@@ -13,7 +13,7 @@ func MatchDriverActivity(ctx context.Context, req *shared.MatchDriverRequest) (*
 	defer heartbeat.Stop()
 
 	log.Println("matching driver...", req.UserID, req.UserLocation)
-	time.Sleep(2 * time.Second)
+	//time.Sleep(2 * time.Second)
 
 	return &shared.MatchDriverResponse{}, nil
 }
