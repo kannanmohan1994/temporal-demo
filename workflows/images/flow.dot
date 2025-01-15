@@ -1,0 +1,41 @@
+digraph Uber_Ride_Request_Flow {
+    node [shape=box, style=filled, fontname=Helvetica, fontsize=10];
+
+    A [label="User requests a ride\n(Uber-service)", labelloc="b", color="lightblue"];
+    B [label="Fetch user details\n(User-service)", labelloc="b", color="lightgreen"];
+    C [label="Verify user\n(User-service)", labelloc="b", color="lightyellow"];
+    D [label="User not verified\n(Fail request with error)\n(User-service)", labelloc="b", color="lightcoral"];
+    E [label="User verified\n(User-service)", labelloc="b", color="lightgreen"];
+    F [label="Search for a driver\n(Driver-service)", labelloc="b", color="lightblue"];
+    G [label="Driver responds\n(Driver-service)", labelloc="b", color="lightyellow"];
+    H [label="Driver responds with No\n(Repeat from Search for a driver)\n(Driver-service)", labelloc="b", color="lightcoral"];
+    I [label="Driver responds with Yes\n(Driver allocated)\n(Driver-service)", labelloc="b", color="lightgreen"];
+    J [label="Driver match time-out\n(Fail request with error)\n(Driver-service)", labelloc="b", color="lightcoral"];
+    K [label="Wait driver time-out\n(Repeat from Search for a driver)\n(Driver-service)", labelloc="b", color="lightcoral"];
+    L [label="Send notification to user\n(Notification-service)", labelloc="b", color="lightgrey"];
+
+    A -> B;
+    A -> C;
+    B -> E [constraint=false];
+    C -> D [label="User not verified", color="red"];
+    C -> E [label="User verified", color="green"];
+    E -> F;
+    F -> G [label="Match driver"];
+    F -> J [label="Time-out", color="red"];
+    G -> H [label="No", style="dashed", color="red"];
+    H -> F;
+    G -> I [label="Yes", color="green"];
+    G -> K [label="Time-out", color="red"];
+    K -> F;
+
+    B -> L [label="Notify user", color="grey"];
+    C -> L [label="Notify user", color="grey"];
+    D -> L [label="Notify user", color="grey"];
+    E -> L [label="Notify user", color="grey"];
+    F -> L [label="Notify user", color="grey"];
+    G -> L [label="Notify user", color="grey"];
+    H -> L [label="Notify user", color="grey"];
+    I -> L [label="Notify user", color="grey"];
+    J -> L [label="Notify user", color="grey"];
+    K -> L [label="Notify user", color="grey"];
+}
